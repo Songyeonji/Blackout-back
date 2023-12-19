@@ -3,43 +3,40 @@ package com.example.blackout.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.blackout.service.ArticleService;
 import com.example.blackout.vo.Article;
 
+
 @Controller
-@RequestMapping("/usr/article")
 public class UsrArticleController {
 
-    private List<Article> articles;
-    private int lastArticleId;
+    private final ArticleService articleService;
 
-    UsrArticleController() {
-        this.articles = new ArrayList<>();
-        this.lastArticleId = 0;
+    public UsrArticleController(ArticleService articleService) {
+        this.articleService = articleService;
     }
 
-    @PostMapping("/doWrite")
-    @ResponseBody
-    public ResponseEntity<Article> doWrite(@RequestBody Article article) {
-        this.lastArticleId++;
-        article.setId(this.lastArticleId);
-
-        articles.add(article);
-
-        return new ResponseEntity<>(article, HttpStatus.CREATED);
-    }
-
-    @RequestMapping("/showList")
+    @GetMapping("/usr/article/showList")
     @ResponseBody
     public List<Article> showList() {
-        return this.articles;
+        return articleService.getArticles();
     }
-}
 
+
+    @PostMapping("/usr/article/doWrite")
+    @ResponseBody
+    public ResponseEntity<Article> doWrite(@RequestBody Article vo) {
+        Article article = articleService.writeArticle(vo);
+        return ResponseEntity.ok(article);
+    }
+
+
+    // ... (이후 코드 생략)
+}

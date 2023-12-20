@@ -1,10 +1,11 @@
-package com.example.blackout.controller;
+ package com.example.blackout.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,11 +33,10 @@ public class UsrArticleController {
 
     @PostMapping("/usr/article/doWrite")
     @ResponseBody
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<Article> doWrite(@RequestBody Article vo) {
         Article article = articleService.writeArticle(vo);
         return ResponseEntity.ok(article);
     }
-
-
-    // ... (이후 코드 생략)
 }
+
